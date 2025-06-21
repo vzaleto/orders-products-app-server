@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+
 }
 
 datasource db {
@@ -22,6 +22,12 @@ model Order {
   products    Product[]
 }
 
+model ProductType{
+  id   Int @id @default(autoincrement())
+  name String @unique
+  products Product[]
+}
+
 model Product {
   id             Int      @id @default(autoincrement())
   order          Order    @relation(fields: [orderId], references: [id])
@@ -30,11 +36,15 @@ model Product {
   isNew          Boolean
   photo          String
   title          String
-  type           String
   specification  String
   guaranteeStart DateTime
   guaranteeEnd   DateTime
   priceUsd       Float
   priceUah       Float
   date           DateTime
+
+  typeId Int
+  type ProductType @relation(fields: [typeId], references: [id])
 }
+
+
